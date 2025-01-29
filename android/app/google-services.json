@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "367593452741",
+    "project_id": "swapshop-4660b",
+    "storage_bucket": "swapshop-4660b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367593452741:android:c62a59d8818631cb97acac",
+        "android_client_info": {
+          "package_name": "com.example.swap_cust_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD9YQqup8NLvyucUSTDLrmDoQJPEtZz9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
