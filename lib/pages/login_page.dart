@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
+import 'package:swap_cust_app/pages/email_signin_page.dart';
 import 'package:swap_cust_app/pages/otp_verification_page.dart';
 import 'package:swap_cust_app/util/app_validator.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
@@ -112,7 +113,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   //or sign up with text
                   Text("Or Sign Up with"),
-
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EmailSigninPage()));
+                    },
+                    child: Text("Sign in with email"),
+                  ),
                   //continue with google
                   SizedBox(
                     height: size.height * 0.06,

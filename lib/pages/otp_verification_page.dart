@@ -57,7 +57,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               borderColor: Theme.of(context).primaryColor,
               clearText: true,
               showFieldAsBox: true,
-              fieldWidth: 30,
+              fieldWidth: 40,
               handleControllers: (controllers) {
                 smsCode = controllers.join();
               },

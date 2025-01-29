@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
-import 'package:swap_cust_app/constants/constants.dart';
 import 'package:swap_cust_app/model/popular_category_model.dart';
 import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
 
@@ -136,19 +135,13 @@ class _RedeemPageState extends State<RedeemPage> {
                   ],
                 ),
               ),
-              //barcode
-              Center(
-                child: Container(
-                  height: size.height * 0.15,
-                  width: size.width * 0.30,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage(qr), fit: BoxFit.cover)),
-                ),
-              ),
+
               Padding(
                 padding: const EdgeInsets.only(left: 20),
-                child: Text("Rating"),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 70),
+                  child: Text("Rating"),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),

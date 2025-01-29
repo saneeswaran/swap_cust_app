@@ -6,6 +6,13 @@ class Appvalidator {
     return null;
   }
 
+  String? passwordValidator(value) {
+    if (value.isEmpty || value == null) {
+      return "Please enter your password";
+    }
+    return null;
+  }
+
   String? mobileNumberValidator(value) {
     if (value.isEmpty || value == null) {
       return "Please enter your mobile number";
