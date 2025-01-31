@@ -129,16 +129,6 @@ class _ProductPreviewPageState extends State<ProductPreviewPage> {
                         style: customTextStyle,
                       ),
                     ),
-                    Material(
-                      shape: CircleBorder(),
-                      color: Theme.of(context).primaryColor,
-                      child: IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.directions_rounded,
-                            color: Colors.white,
-                          )),
-                    )
                   ],
                 ),
               ),
