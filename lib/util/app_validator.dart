@@ -6,6 +6,13 @@ class Appvalidator {
     return null;
   }
 
+  String? userNameValidator(value) {
+    if (value.isEmpty || value == null) {
+      return "Please enter your email address";
+    }
+    return null;
+  }
+
   String? passwordValidator(value) {
     if (value.isEmpty || value == null) {
       return "Please enter your password";

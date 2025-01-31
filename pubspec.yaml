@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_auth: ^5.4.1
   firebase_core: ^3.10.1
+  firebase_storage: ^12.4.1
   flutter:
     sdk: flutter
   flutter_otp_text_field: ^1.4.0+2

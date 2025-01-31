@@ -9,3 +9,4 @@ const String appliances = "$imagePath/appliances.jpg";
 const String profile = "$imagePath/profile.jpg";
 const String qr = "$imagePath/qr.png";
 const String otp = "$imagePath/otp.png";
+const String emptyProfile = "$imagePath/empty profile.png";

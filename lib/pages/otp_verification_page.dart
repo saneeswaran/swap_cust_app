@@ -100,12 +100,6 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                   }
 
                   if (context.mounted) {
-                    db.createData(context, data: {
-                      "username": widget.username,
-                      "mobileNumber": widget.mobileNumberController,
-                      "totalCreditRedeemed": totalCreditRedeemed,
-                      "creditBalance": creditBalance
-                    });
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => BottomNavBar()),

@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
 import 'package:swap_cust_app/services/authendication_service.dart';
-import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
-import 'package:swap_cust_app/widgets/custom_text_form_field.dart';
 
-import '../services/database.dart';
 import '../util/app_validator.dart';
+import '../widgets/custom_elevated_button.dart';
+import '../widgets/custom_text_form_field.dart';
 
-class EmailSigninPage extends StatefulWidget {
-  const EmailSigninPage({super.key});
+class LoginWithEmailPage extends StatefulWidget {
+  const LoginWithEmailPage({super.key});
 
   @override
-  State<EmailSigninPage> createState() => _EmailSigninPageState();
+  State<LoginWithEmailPage> createState() => _LoginWithEmailPageState();
 }
 
-class _EmailSigninPageState extends State<EmailSigninPage> {
-  //class
-  final validator = Appvalidator();
-  final auth = AuthendicationService();
-  final db = Database();
-  int totalCreditRedeemed = 0;
-  int creditBalance = 0;
-
-  bool isShowPassword = true;
-
+class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
   //controllers
-  final userNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  //var
+  bool isShowPassword = true;
+
+  //classes
+  final validator = Appvalidator();
+  final auth = AuthendicationService();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,13 +49,9 @@ class _EmailSigninPageState extends State<EmailSigninPage> {
                         fit: BoxFit.contain)),
               ),
               Text(
-                "Sign In",
+                "Login",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              CustomTextFormField(
-                  controller: userNameController,
-                  labelText: "Username",
-                  validator: validator.emailValidator),
               CustomTextFormField(
                   controller: emailController,
                   labelText: "Email",
@@ -82,7 +73,7 @@ class _EmailSigninPageState extends State<EmailSigninPage> {
                 height: size.height * 0.08,
                 width: size.width * 1,
                 child: CustomElevatedButton(
-                  text: "Sign In",
+                  text: "Login",
                   onPressed: () async {
                     if (emailController.text.isEmpty ||
                         passwordController.text.isEmpty) {
@@ -91,23 +82,9 @@ class _EmailSigninPageState extends State<EmailSigninPage> {
                       );
                       return;
                     }
-                    await auth.createUser(
-                        emailController.text, passwordController.text);
-                    await db.createData(context, data: {
-                      "Username": userNameController.text,
-                      "email": emailController.text,
-                      "password": passwordController.text,
-                      "totalCreditRedeemed": totalCreditRedeemed,
-                      "creditBalance": creditBalance
-                    });
-                    emailController.clear();
-                    passwordController.clear();
-                    if (context.mounted) {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => BottomNavBar()));
-                    }
+                    await auth.loginUser(context,
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim());
                   },
                   backgroundColor: Theme.of(context).primaryColor,
                 ),

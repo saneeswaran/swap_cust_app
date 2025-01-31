@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swap_cust_app/constants/constants.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:swap_cust_app/pages/login_page.dart';
+import 'package:swap_cust_app/pages/registration_page.dart';
 
 import '../services/authendication_service.dart';
 import '../widgets/custom_elevated_button.dart';
@@ -41,21 +42,32 @@ class _ProfilePageState extends State<ProfilePage> {
 
 //class
   final auth = AuthendicationService();
+
+  //database funtion
+  String getCurrentUser() {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    return userId;
+  }
+
+  Future<DocumentSnapshot> getData() async {
+    String currentUser = getCurrentUser();
+    return await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser)
+        .get();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
-        child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('users').snapshots(),
+        child: FutureBuilder<DocumentSnapshot>(
+          future: getData(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
             if (snapshot.hasData) {
-              final users = snapshot.data!.docs;
+              var data = snapshot.data!.data() as Map<dynamic, dynamic>;
+              String profilePic = data['userImage'] ?? '';
               return Column(
                 children: [
                   SizedBox(
@@ -75,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   side: BorderSide(
                                       color: Colors.white, width: 4)),
                               child: CircleAvatar(
-                                backgroundImage: FileImage(image!),
+                                backgroundImage: NetworkImage(profilePic),
                                 radius: 80,
                               ),
                             ),
@@ -95,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     side: BorderSide(
                                         color: Colors.white, width: 4)),
                                 child: CircleAvatar(
-                                  backgroundImage: AssetImage(profile),
+                                  backgroundImage: AssetImage(emptyProfile),
                                   radius: 80,
                                 ),
                               ),
@@ -107,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   // user name
                   Text(
-                    " ${users.first['Username']}",
+                    "${data['userName']}",
                     style: TextStyle(
                         color: Color(0xff0B67BC),
                         fontSize: 24,
@@ -119,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   //total credit balance
                   Text(
-                    "${users.first['totalCreditRedeemed']}",
+                    "${data['creditBalance']}",
                     style: TextStyle(fontSize: 40, fontWeight: FontWeight.w500),
                   ),
                   Text(
@@ -179,7 +191,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                                    builder: (context) => RegistrationPage()));
                           },
                           backgroundColor: Theme.of(context).primaryColor,
                         ),
@@ -188,8 +200,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               );
+            } else {
+              return Center(child: CircularProgressIndicator());
             }
-            return Text("Nothing");
           },
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swap_cust_app/constants/constants.dart';
-import 'package:swap_cust_app/pages/login_page.dart';
+import 'package:swap_cust_app/pages/registration_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -14,8 +14,8 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
       if (context.mounted) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => RegistrationPage()));
       }
     });
 

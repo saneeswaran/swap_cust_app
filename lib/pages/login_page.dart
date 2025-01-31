@@ -1,145 +1,96 @@
-import 'dart:developer';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
-import 'package:swap_cust_app/pages/email_signin_page.dart';
-import 'package:swap_cust_app/pages/otp_verification_page.dart';
-import 'package:swap_cust_app/util/app_validator.dart';
-import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
-import 'package:swap_cust_app/widgets/custom_text_form_field.dart';
+import 'package:swap_cust_app/services/authendication_service.dart';
+
+import '../util/app_validator.dart';
+import '../widgets/custom_elevated_button.dart';
+import '../widgets/custom_text_form_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginWithEmailPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginWithEmailPageState extends State<LoginPage> {
   //controllers
-  final usernameController = TextEditingController();
-  final mobileNumberController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
-//classes
-  final appvalidator = Appvalidator();
+  //var
+  bool isShowPassword = true;
 
+  //classes
+  final validator = Appvalidator();
+  final auth = AuthendicationService();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          spacing: size.height * 0.08,
-          children: [
-            Container(
-              height: size.height * 0.30,
-              width: size.width * 1,
-              decoration: BoxDecoration(color: Colors.grey),
-              child: Center(
-                child: Text("Image"),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: size.height * 0.02,
+            children: [
+              SizedBox(
+                height: size.height * 0.04,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                spacing: size.height * 0.03,
-                children: [
-                  CustomTextFormField(
-                    labelText: "Username",
-                    controller: usernameController,
-                    validator: appvalidator.emailValidator,
-                  ),
-                  CustomTextFormField(
-                    labelText: "Mobile number",
-                    controller: mobileNumberController,
-                    validator: appvalidator.mobileNumberValidator,
-                  ),
-
-                  SizedBox(
-                    height: size.height * 0.06,
-                    width: size.width * 0.66,
-                    child: CustomElevatedButton(
-                      text: "Get OTP",
-                      onPressed: () async {
-                        if (usernameController.text.isEmpty ||
-                            mobileNumberController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("Please fill the details")));
-                        }
-                        await FirebaseAuth.instance.verifyPhoneNumber(
-                            phoneNumber: mobileNumberController.text,
-                            verificationCompleted: (phoneAuthCredential) {
-                              FirebaseAuth.instance
-                                  .signInWithCredential(phoneAuthCredential)
-                                  .then((userCredential) {
-                                if (context.mounted) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              BottomNavBar()));
-                                }
-                              }).catchError((error) {
-                                log("Verification Completed Error: $error");
-                              });
-                            },
-                            verificationFailed: (error) {
-                              log("Verification Failed: ${error.message}");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                      "Verification Failed: ${error.message}"),
-                                ),
-                              );
-                            },
-                            codeSent: (verificationId, forceResendingToken) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => OtpVerificationPage(
-                                            verificationId: verificationId,
-                                            username: usernameController.text,
-                                            mobileNumberController:
-                                                mobileNumberController.text,
-                                          )));
-                            },
-                            codeAutoRetrievalTimeout: (verificationId) {
-                              log("Auto Retrival Timeout");
-                            });
-                      },
-                      backgroundColor: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  //or sign up with text
-                  Text("Or Sign Up with"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmailSigninPage()));
-                    },
-                    child: Text("Sign in with email"),
-                  ),
-                  //continue with google
-                  SizedBox(
-                    height: size.height * 0.06,
-                    width: size.width * 0.66,
-                    child: CustomOutlinedButton(
-                      text: "Continue with Google",
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BottomNavBar()));
-                      },
-                    ),
-                  )
-                ],
+              Container(
+                margin: const EdgeInsets.all(20),
+                height: size.height * 0.30,
+                width: size.width * 1,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                            "https://i.postimg.cc/nz0YBQcH/Logo-light.png"),
+                        fit: BoxFit.contain)),
               ),
-            ),
-          ],
+              Text(
+                "Login",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              CustomTextFormField(
+                  controller: emailController,
+                  labelText: "Email",
+                  validator: validator.emailValidator),
+              CustomTextFormField(
+                controller: passwordController,
+                labelText: "Password",
+                validator: validator.passwordValidator,
+                suffixIcon:
+                    isShowPassword ? Icons.visibility : Icons.visibility_off,
+                onPressed: () {
+                  setState(() {
+                    isShowPassword = !isShowPassword;
+                  });
+                },
+                obScureText: isShowPassword,
+              ),
+              SizedBox(
+                height: size.height * 0.08,
+                width: size.width * 1,
+                child: CustomElevatedButton(
+                  text: "Login",
+                  onPressed: () async {
+                    if (emailController.text.isEmpty ||
+                        passwordController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Please fill the form")),
+                      );
+                      return;
+                    }
+                    await auth.loginUser(context,
+                        email: emailController.text.trim(),
+                        password: passwordController.text.trim());
+                  },
+                  backgroundColor: Theme.of(context).primaryColor,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
