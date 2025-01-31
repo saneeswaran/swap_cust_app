@@ -201,7 +201,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               );
             } else {
-              return Center(child: CircularProgressIndicator());
+              return Container(
+                height: size.height * 1,
+                width: size.width * 1,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor),
+                ),
+              );
             }
           },
         ),
