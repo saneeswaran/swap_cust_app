@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:swap_cust_app/services/api_service.dart';
 
 import '../model/popular_category_model.dart';
 import '../widgets/custom_elevated_button.dart';
@@ -40,6 +43,13 @@ class _ProductPreviewPageState extends State<ProductPreviewPage> {
     return null;
   }
 
+//image compression
+  String _convertImageToBase64(File imageFile) {
+    List<int> imageBytes = imageFile.readAsBytesSync();
+    return base64Encode(imageBytes);
+  }
+
+  // Upload Image to MongoDB
 //shortlist page button
   bool shortList = false;
 
@@ -163,16 +173,31 @@ class _ProductPreviewPageState extends State<ProductPreviewPage> {
                 child: CustomElevatedButton(
                     text: "Get Quote",
                     onPressed: () {
-                      customAlertDialogue();
-                      Future.delayed(const Duration(seconds: 2), () {
-                        if (context.mounted) {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => BottomNavBar()),
-                              (Route<dynamic> route) => false);
-                        }
-                      });
+                      String base64Image = _convertImageToBase64(widget.image);
+                      try {
+                        var data = {
+                          "itemName": widget.itemName,
+                          "itemDescription": widget.itemDescription,
+                          "itemAge": widget.itemAge,
+                          "itemPrice": widget.itemPrice,
+                          "itemImage": base64Image,
+                          "location": widget.address
+                        };
+
+                        ApiService.addProduct(data);
+                        customAlertDialogue();
+                        Future.delayed(const Duration(seconds: 2), () {
+                          if (context.mounted) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BottomNavBar()),
+                                (Route<dynamic> route) => false);
+                          }
+                        });
+                      } catch (e) {
+                        log("error found");
+                      }
                     },
                     backgroundColor: Theme.of(context).primaryColor),
               )

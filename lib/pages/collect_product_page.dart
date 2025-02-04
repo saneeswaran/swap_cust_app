@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,25 +29,45 @@ class _CollectProductPageState extends State<CollectProductPage> {
       PopularCategoryModel.popularCategoryList;
 
 //image picker
-  File? image;
-  final ImagePicker picker = ImagePicker();
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
 
-  Future<void> getImageFromGalleery() async {
-    final pickerFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickerFile != null) {
-      setState(() {
-        image = File(pickerFile.path);
-      });
-    }
+  // Pick an image and compress it
+  Future<void> pickAndCompressImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) return;
+
+    File? compressedImage = await _compressImage(File(pickedFile.path));
+
+    setState(() {
+      _selectedImage = compressedImage;
+    });
   }
 
   Future<void> getImageFromCamera() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      setState(() {
-        image = File(pickedFile.path);
-      });
-    }
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+    if (pickedFile == null) return;
+
+    File? compressedImage = await _compressImage(File(pickedFile.path));
+
+    setState(() {
+      _selectedImage = compressedImage;
+    });
+  }
+
+  // Compress image
+  Future<File?> _compressImage(File file) async {
+    final filePath = file.absolute.path;
+    final lastIndex = filePath.lastIndexOf('.');
+    final compressedPath = '${filePath.substring(0, lastIndex)}_compressed.jpg';
+
+    final result = await FlutterImageCompress.compressAndGetFile(
+      filePath,
+      compressedPath,
+      quality: 70,
+    );
+
+    return result != null ? File(result.path) : null;
   }
 
   void showImageSourceDialog() {
@@ -71,7 +92,7 @@ class _CollectProductPageState extends State<CollectProductPage> {
                 title: Text("Gallery"),
                 onTap: () {
                   Navigator.pop(context);
-                  getImageFromGalleery();
+                  pickAndCompressImage();
                 },
               ),
             ],
@@ -83,7 +104,7 @@ class _CollectProductPageState extends State<CollectProductPage> {
 
   void removeImage() {
     setState(() {
-      image = null; // Reset the selected image
+      _selectedImage = null;
     });
   }
 
@@ -225,7 +246,7 @@ class _CollectProductPageState extends State<CollectProductPage> {
                 validator: appValidator.categoryList,
               ),
               //image picker
-              if (image == null)
+              if (_selectedImage == null)
                 GestureDetector(
                   onTap: showImageSourceDialog,
                   child: Container(
@@ -246,25 +267,32 @@ class _CollectProductPageState extends State<CollectProductPage> {
                   height: size.height * 0.20,
                   width: size.width * 1,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Theme.of(context).primaryColor),
-                      image: DecorationImage(
-                          image: FileImage(image!), fit: BoxFit.values[2])),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Theme.of(context).primaryColor),
+                    image: DecorationImage(
+                      image: FileImage(
+                          _selectedImage!), // Ensure this uses the compressed image
+                      fit: BoxFit.cover, // Adjust fit as needed
+                    ),
+                  ),
                   child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 10, bottom: 10),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(30)),
-                        child: IconButton(
-                            onPressed: removeImage,
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                              size: 20,
-                            )),
-                      )),
+                    alignment: Alignment.bottomRight,
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 10, bottom: 10),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: IconButton(
+                        onPressed: removeImage,
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               // get details from user
               CustomDetailsGettingFromUserPage(
@@ -314,17 +342,9 @@ class _CollectProductPageState extends State<CollectProductPage> {
                                 staticMap(latitude!, longitude!)))),
                   ),
                 ),
-              SizedBox(
-                height: size.height * 0.03,
-                width: size.width * 1,
-                child: Flexible(
-                  child: Text(
-                    "Address : $address",
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: customTextStyle,
-                  ),
-                ),
+              Text(
+                "Address : $address",
+                style: customTextStyle,
               ),
               //confirm button
               SizedBox(
@@ -351,7 +371,7 @@ class _CollectProductPageState extends State<CollectProductPage> {
                             itemPrice: purchasePriceController.text,
                             itemDescription: itemDescriptionController.text,
                             address: address,
-                            image: image!,
+                            image: _selectedImage!,
                           ),
                         ),
                       );
