@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swap_cust_app/constants/constants.dart';
-import 'package:swap_cust_app/pages/registration_page.dart';
+
+import 'registration_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

@@ -11,8 +11,8 @@ import 'package:swap_cust_app/services/authendication_service.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
 import 'package:swap_cust_app/widgets/custom_text_form_field.dart';
 
-import '../services/database.dart';
-import '../util/app_validator.dart';
+import '../../services/database.dart';
+import '../../util/app_validator.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});

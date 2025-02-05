@@ -4,11 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swap_cust_app/constants/constants.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:swap_cust_app/pages/registration_page.dart';
 
 import '../services/authendication_service.dart';
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/profile_page_buttons.dart';
+import 'auth_screen/registration_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
