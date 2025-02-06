@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swap_cust_app/constants/constants.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
 
-import '../widgets/custom_popular_category.dart';
+import '../../widgets/custom_popular_category.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

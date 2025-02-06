@@ -8,6 +8,7 @@ import 'package:swap_cust_app/pages/google_map_page.dart';
 import 'package:swap_cust_app/pages/product_preview_page.dart';
 import 'package:swap_cust_app/util/app_validator.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../model/popular_category_model.dart';
 import '../widgets/custom_text_form_field.dart';
@@ -127,27 +128,48 @@ class _CollectProductPageState extends State<CollectProductPage> {
     return "https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C$latitude,$longitude&key=$apiKey";
   }
 
+  Future<void> requestLocationPermission() async {
+    final permission = Permission.location;
+
+    if (await permission.isGranted) {
+      getCurrentLocation();
+    } else {
+      if (await permission.isDenied) {
+        await permission.request();
+      }
+
+      if (await permission.isPermanentlyDenied) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Location Permission"),
+              content: Text(
+                  "Location permission is permanently denied. Please enable it in the settings."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    openAppSettings();
+                  },
+                  child: Text("Open Settings"),
+                ),
+              ],
+            );
+          },
+        );
+      } else if (await permission.isGranted) {
+        getCurrentLocation();
+      }
+    }
+  }
+
   Future<void> getCurrentLocation() async {
     bool serviceEnabled;
-    LocationPermission permission;
-
     // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       await Geolocator.openLocationSettings();
-      return;
-    }
-
-    // Check for permissions
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
       return;
     }
 
@@ -204,7 +226,7 @@ class _CollectProductPageState extends State<CollectProductPage> {
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
+    requestLocationPermission();
   }
 
   @override

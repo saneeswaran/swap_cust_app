@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:swap_cust_app/pages/notification_page.dart';
-import 'package:swap_cust_app/pages/shortlist_page.dart';
-import 'package:swap_cust_app/pages/history_page.dart';
-import 'package:swap_cust_app/pages/home_page.dart';
-import 'package:swap_cust_app/pages/profile_page.dart';
+
+import 'history_page.dart';
+import 'home_page.dart';
+import 'notification_page.dart';
+import 'profile_page.dart';
+import 'shortlist_page.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});

@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
 import 'package:swap_cust_app/util/app_validator.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
 import 'package:swap_cust_app/widgets/custom_text_form_field.dart';
 
+import '../bottom_nav_bar/bottom_nav_bar.dart';
 import 'otp_verification_page.dart';
 import 'registration_page.dart';
 

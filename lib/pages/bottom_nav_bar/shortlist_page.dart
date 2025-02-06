@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swap_cust_app/model/popular_category_model.dart';
+import 'package:swap_cust_app/pages/bottom_nav_bar/accept_credit_page.dart';
 
 class ShortlistPage extends StatefulWidget {
   const ShortlistPage({super.key});
@@ -141,7 +142,13 @@ class _ShortlistPageState extends State<ShortlistPage> {
                                         height: size.height * 0.04,
                                         width: size.width * 0.19,
                                         child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AcceptCreditPage()));
+                                            },
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor:
                                                     Color(0xffE6EDBC),

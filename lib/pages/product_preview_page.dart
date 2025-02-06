@@ -8,7 +8,7 @@ import 'package:swap_cust_app/services/api_service.dart';
 
 import '../model/popular_category_model.dart';
 import '../widgets/custom_elevated_button.dart';
-import 'bottom_nav_bar.dart';
+import 'bottom_nav_bar/bottom_nav_bar.dart';
 
 class ProductPreviewPage extends StatefulWidget {
   final String itemName;

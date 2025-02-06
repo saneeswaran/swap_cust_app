@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:swap_cust_app/constants/constants.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../services/authendication_service.dart';
-import '../widgets/custom_elevated_button.dart';
-import '../widgets/profile_page_buttons.dart';
-import 'auth_screen/registration_page.dart';
+import '../../services/authendication_service.dart';
+import '../../widgets/custom_elevated_button.dart';
+import '../../widgets/profile_page_buttons.dart';
+import '../auth_screen/registration_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -146,16 +146,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       spacing: size.height * 0.03,
                       children: [
-                        // SizedBox(
-                        //   height: size.height * 0.10,
-                        //   width: size.width * 1,
-                        //   child: ProfilePageSwitchButton(
-                        //     text: "Premium User",
-                        //     icon: Icons.power_settings_new,
-                        //     value: switchButtonValue,
-                        //     onChanged: switchButtonOnchanged,
-                        //   ),
-                        // ),
                         SizedBox(
                           height: size.height * 0.08,
                           width: size.width * 1,
@@ -165,7 +155,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {},
                           ),
                         ),
-
                         SizedBox(
                           height: size.height * 0.08,
                           width: size.width * 1,
@@ -175,15 +164,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {},
                           ),
                         ),
-                        // SizedBox(
-                        //   height: size.height * 0.08,
-                        //   width: size.width * 1,
-                        //   child: ProfilePageButtons(
-                        //     text: "Account Settings",
-                        //     icon: Icons.swap_calls,
-                        //     onPressed: () {},
-                        //   ),
-                        // ),
                         CustomElevatedButton(
                           text: "Logout",
                           onPressed: () {

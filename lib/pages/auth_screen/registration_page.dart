@@ -6,13 +6,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swap_cust_app/constants/constants.dart';
-import 'package:swap_cust_app/pages/login_page.dart';
 import 'package:swap_cust_app/services/authendication_service.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
 import 'package:swap_cust_app/widgets/custom_text_form_field.dart';
 
 import '../../services/database.dart';
 import '../../util/app_validator.dart';
+import 'login_page.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});

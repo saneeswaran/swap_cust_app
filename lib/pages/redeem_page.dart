@@ -3,9 +3,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:swap_cust_app/model/popular_category_model.dart';
-import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
 
 import '../widgets/custom_elevated_button.dart';
+import 'bottom_nav_bar/bottom_nav_bar.dart';
 
 class RedeemPage extends StatefulWidget {
   const RedeemPage({

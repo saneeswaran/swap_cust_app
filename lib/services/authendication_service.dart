@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
+
+import '../pages/bottom_nav_bar/bottom_nav_bar.dart';
 
 class AuthendicationService {
   final FirebaseAuth auth = FirebaseAuth.instance;

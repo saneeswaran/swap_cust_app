@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swap_cust_app/pages/notification_store_details.dart';
 
-import '../model/popular_category_model.dart';
+import '../../model/popular_category_model.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});

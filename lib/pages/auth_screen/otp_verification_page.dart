@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:swap_cust_app/constants/constants.dart';
-import 'package:swap_cust_app/pages/bottom_nav_bar.dart';
 import 'package:swap_cust_app/services/database.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
+
+import '../bottom_nav_bar/bottom_nav_bar.dart';
 
 class OtpVerificationPage extends StatefulWidget {
   final String username;
