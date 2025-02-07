@@ -13,6 +13,38 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   //controller
   final searchController = TextEditingController();
+  List<String> products = [
+    "A to Z Furniture",
+    "B to Y Furniture",
+    "C to X Furniture",
+    "D to W Furniture"
+  ];
+  List<String> filteredProducts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredProducts = products;
+    searchController.addListener(_filterProducts);
+  }
+
+  void _filterProducts() {
+    setState(() {
+      filteredProducts = products
+          .where((product) => product
+              .toLowerCase()
+              .contains(searchController.text.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.removeListener(_filterProducts);
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -80,7 +112,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   ],
                 ),
                 ListView.builder(
-                    itemCount: 4,
+                    itemCount: filteredProducts.length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
@@ -118,7 +150,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                     spacing: size.height * 0.01,
                                     children: [
                                       Text(
-                                        "A to Z Furniture",
+                                        filteredProducts[index],
                                         style: TextStyle(
                                           fontSize: 16,
                                         ),
