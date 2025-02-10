@@ -16,13 +16,17 @@ class _LoginWithEmailPageState extends State<LoginPage> {
   //controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
+//keys
+  final formKey = GlobalKey<FormState>();
   //var
   bool isShowPassword = true;
 
   //classes
   final validator = Appvalidator();
   final auth = AuthendicationService();
+
+  //function
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -80,11 +84,11 @@ class _LoginWithEmailPageState extends State<LoginPage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Please fill the form")),
                       );
-                      return;
+                    } else {
+                      await auth.loginUser(context,
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim());
                     }
-                    await auth.loginUser(context,
-                        email: emailController.text.trim(),
-                        password: passwordController.text.trim());
                   },
                   backgroundColor: Theme.of(context).primaryColor,
                 ),

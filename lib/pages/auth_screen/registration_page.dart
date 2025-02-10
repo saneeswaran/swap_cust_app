@@ -1,15 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swap_cust_app/constants/constants.dart';
 import 'package:swap_cust_app/services/authendication_service.dart';
 import 'package:swap_cust_app/widgets/custom_elevated_button.dart';
 import 'package:swap_cust_app/widgets/custom_text_form_field.dart';
+import 'package:http/http.dart' as http;
 
+import '../../api_service/api.dart';
 import '../../services/database.dart';
 import '../../util/app_validator.dart';
 import 'login_page.dart';
@@ -52,6 +56,22 @@ class _EmailSigninPageState extends State<RegistrationPage> {
       return downloadUrl;
     } catch (e) {
       return null;
+    }
+  }
+
+  validateEmail() async {
+    try {
+      final result = await http.post(Uri.parse(Api.validateEmail),
+          body: {"user_email": emailController.text.trim()});
+
+      if (result.statusCode == 200) {
+        final resultBody = jsonDecode(result.body);
+        if (resultBody['exist'] == true) {
+          Get.snackbar("", "user already exists");
+        }
+      }
+    } catch (e) {
+      Get.snackbar("error occured", e.toString());
     }
   }
 
