@@ -10,3 +10,5 @@ const String profile = "$imagePath/profile.jpg";
 const String qr = "$imagePath/qr.png";
 const String otp = "$imagePath/otp.png";
 const String emptyProfile = "$imagePath/empty profile.png";
+
+const String baseUrl = "http://192.168.1.4:3000";

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swap_cust_app/model/popular_category_model.dart';
-import 'package:swap_cust_app/pages/collect_product_page.dart';
+
+import '../pages/screens/collect product details/collect_product_page.dart';
 
 class CustomPopularCategory extends StatelessWidget {
   CustomPopularCategory({
@@ -11,15 +11,13 @@ class CustomPopularCategory extends StatelessWidget {
   final Size size;
 
 //popular category
-  final List<PopularCategoryModel> list =
-      PopularCategoryModel.popularCategoryList;
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: list.length,
+        itemCount: 2,
         //  physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           return GridTile(
@@ -30,9 +28,7 @@ class CustomPopularCategory extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CollectProductPage(
-                                categoryId: list[index].productId,
-                                model: list[index])));
+                            builder: (context) => CollectProductPage()));
                   },
                   child: Container(
                     height: size.height * 0.15,
@@ -40,9 +36,7 @@ class CustomPopularCategory extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       image: DecorationImage(
-                          image: AssetImage(PopularCategoryModel
-                              .popularCategoryList[index].imageUrl),
-                          fit: BoxFit.cover),
+                          image: AssetImage(''), fit: BoxFit.cover),
                     ),
                   ),
                 ),
@@ -50,7 +44,7 @@ class CustomPopularCategory extends StatelessWidget {
                   height: size.height * 0.01,
                 ),
                 Text(
-                  PopularCategoryModel.popularCategoryList[index].category,
+                  'category',
                   style: TextStyle(
                       color: Colors.orange,
                       fontSize: 20,
